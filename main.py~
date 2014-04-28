@@ -32,7 +32,7 @@ class App:
     def on_loop(self):
         self.clock.tick(60)
         if self.flag:
-            self.flappy.y = -12
+            self.flappy.y = -15
             self.flag = 0
         else:
             self.flappy.y = self.flappy.y + self.flappy.g
