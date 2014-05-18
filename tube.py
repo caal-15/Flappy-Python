@@ -19,12 +19,25 @@ class tube():
             self.upRects.append(self.tubeUpSprite.get_rect())
             self.downRects.append(self.tubeDownSprite.get_rect())
             if i == 0:
-                self.upRects[i].move_ip(258, yUp)
-                self.downRects[i].move_ip(258, yDown)
+                self.upRects[i].move_ip(330, yUp)
+                self.downRects[i].move_ip(330, yDown)
             else:
                 self.upRects[i].move_ip(self.upRects[i-1].right + 100, yUp)
                 self.downRects[i].move_ip(self.upRects[i-1].right + 100, yDown)
                 
+    def restart(self):
+        for i in range (0, 4):
+            yDown = random.randint(150, 440)
+            yUp = yDown - 450
+            self.upRects[i] = self.tubeUpSprite.get_rect()
+            self.downRects[i]= self.tubeDownSprite.get_rect()
+            if i == 0:
+                self.upRects[i].move_ip(330, yUp)
+                self.downRects[i].move_ip(330, yDown)
+            else:
+                self.upRects[i].move_ip(self.upRects[i-1].right + 100, yUp)
+                self.downRects[i].move_ip(self.upRects[i-1].right + 100, yDown)
+        
                 
     def normalMovement(self):
         if(self.upRects[0].right <= 0):

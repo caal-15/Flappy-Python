@@ -14,6 +14,7 @@ class flappy():
         self.actualSprite = self.rotationSprite #surface con flappy rotado
         self.flappyRect = self.flappySprites[0].get_rect().move(self.x, 0)
         self.counter = 0
+        self.fskpr = 0 #se saltara frames para hacer mas lenta la animacion
         
         
     def normalMovement(self, flag):
@@ -21,9 +22,14 @@ class flappy():
         self.rotationSprite = self.flappySprites[self.counter]
         self.angle = -3*self.y
         self.actualSprite = pygame.transform.rotate(self.rotationSprite, self.angle)
-        self.counter = self.counter + 1
+        
+        if not(self.fskpr < 2):
+            self.counter = self.counter + 1
+            self.fskpr = 0
+        self.fskpr +=1
+
         if flag:
-            self.y = -12
+            self.y = -11
             
         else:
             self.y = self.y + self.g
@@ -31,4 +37,10 @@ class flappy():
         if self.flappyRect.bottom >= 511 : 
             self.flappyRect= self.flappyRect.move(0, -250)
             self.y = 0
+        
+    def restart(self):
+        self.flappyRect = self.flappySprites[0].get_rect().move(self.x, 200)    
+        
+        
+    
         
