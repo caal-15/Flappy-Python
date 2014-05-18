@@ -1,7 +1,9 @@
 import spritesheet as spritesheet
 import flappy as flappy
 import tube as tube
+import collision_manager as collision
 import ground as ground
+import collision_manager as collision
 import pygame
 from pygame.locals import *
 
@@ -36,6 +38,7 @@ class App:
                 
     def on_loop(self):
         self.clock.tick(60)
+        if (collision.checkCollision(self.tube.upRects, self.tube.downRects, self.ground.groundRects[0], self.flappy.flappyRect)): self._running = False
         self.flappy.normalMovement(self.flag)
         self.ground.normalMovement()
         self.tube.normalMovement()
