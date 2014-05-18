@@ -1,5 +1,7 @@
 import spritesheet as spritesheet
 import flappy as flappy
+import tube as tube
+import ground as ground
 import pygame
 from pygame.locals import *
 
@@ -11,6 +13,8 @@ class App:
         self.background = None
         self.flag=None
         self.flappy = None
+        self.tube = None
+        self.ground = None
         self.clock = pygame.time.Clock()
  
     def on_init(self):
@@ -20,7 +24,8 @@ class App:
         self.ss = spritesheet.spritesheet("Flappy-Graphics.bmp")
         self.background = self.ss.image_at((0, 0, 287, 510))
         self.flappy = flappy.flappy(self.ss)
-                
+        self.tube = tube.tube(self.ss)
+        self.ground = ground.ground(self.ss)      
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -31,17 +36,20 @@ class App:
                 
     def on_loop(self):
         self.clock.tick(60)
-        if self.flag:
-            self.flappy.y = -12
-            self.flag = 0
-        else:
-            self.flappy.y = self.flappy.y + self.flappy.g
-        self.flappy.flappyRect= self.flappy.flappyRect.move(0, self.flappy.y)
+        self.flappy.normalMovement(self.flag)
+        self.ground.normalMovement()
+        self.tube.normalMovement()
+        if self.flag: self.flag = 0
 
         
     def on_render(self):
         self._display_surf.blit(self.background,(0,0))
-        self._display_surf.blit(self.flappy.flappySprite, (self.flappy.x, self.flappy.flappyRect.top))
+        self._display_surf.blit(self.flappy.actualSprite, self.flappy.flappyRect)
+        for i in range (0,4):
+            self._display_surf.blit(self.tube.tubeUpSprite, self.tube.upRects[i])
+            self._display_surf.blit(self.tube.tubeDownSprite, self.tube.downRects[i])
+        self._display_surf.blit(self.ground.groundSprite, self.ground.groundRects[0])
+        self._display_surf.blit(self.ground.groundSprite, self.ground.groundRects[1])
         pygame.display.flip()
     
     def on_cleanup(self):
