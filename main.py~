@@ -41,7 +41,6 @@ class App:
                 self.flag = 1
                 if self.menu == True:
                     self.menu = False
-                    self.restart()
     
     def restart(self):
         self.tube.restart()
@@ -50,9 +49,7 @@ class App:
     def on_loop(self):
         self.clock.tick(60)
         if self.menu == False:
-            if (collision.checkCollision(self.tube.upRects, self.tube.downRects, self.ground.groundRects[0], self.flappy.flappyRect)): 
-                self.restart()
-                self.menu = True
+            if (collision.checkCollision(self.tube.upRects, self.tube.downRects, self.ground.groundRects[0], self.flappy.flappyRect)): self.restart()
             self.flappy.normalMovement(self.flag)
             self.ground.normalMovement()
             self.tube.normalMovement()
