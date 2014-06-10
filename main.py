@@ -21,10 +21,12 @@ class App:
         self.score = None
         self.menu = None
         self.title = None
+        
  
     def on_init(self):
         pygame.init()
         self._display_surf = pygame.display.set_mode((287,510), pygame.HWSURFACE)
+        pygame.display.set_caption("Annoying Bird 0.5")
         self._running = True
         self.ss = spritesheet.spritesheet("Flappy-Graphics.bmp")
         self.numbers = self.ss.images_at([(276,647,11,13), (276,665,11,13), (276,699,11,13), (276,717,11,13), (276,751,11,13), (276,769,11,13), (276,803,11,13), (276,821,11,13), (276,855,11,13), (276,873,11,13)], colorkey =(255,255,255))
@@ -35,7 +37,11 @@ class App:
         self.tube = tube.tube(self.ss)
         self.ground = ground.ground(self.ss)
         self.menu = True
-        self.title = self.ss.image_at((701,182,178,47), colorkey=(255,255,255))
+        self.title = pygame.image.load("Menu.bmp")
+        pygame.mixer.init()
+        pygame.mixer.music.load("TOP.ogg") 
+        pygame.mixer.music.set_volume(1.0)
+        
  
     def scoreUpdate(self):
         for rect in self.tube.upRects:
@@ -55,15 +61,20 @@ class App:
         if event.type == pygame.QUIT:
             self._running = False
         if event.type == KEYDOWN:
-            if event.key == K_m:
+            if event.key == K_SPACE:
                 self.flag = 1
                 if self.menu == True:
                     self.menu = False
                     self.restart()
+                    pygame.mixer.music.play(1, 1.5)
+            elif event.key == K_s and self.menu == True:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.play(1, 1.5)
     
     def restart(self):
         self.tube.restart()
         self.flappy.restart()
+        pygame.mixer.music.stop()
         self.score = 0
                 
     def on_loop(self):
@@ -95,7 +106,7 @@ class App:
             self._display_surf.blit(self.numbers[self.score % 10], (self.numberRect.right + 5, self.numberRect.top))
         if self.menu == True:
             self._display_surf.blit(self.background,(0,0))
-            self._display_surf.blit(self.title,(48,207))
+            self._display_surf.blit(self.title,(0,0))
 
         pygame.display.flip()
     
